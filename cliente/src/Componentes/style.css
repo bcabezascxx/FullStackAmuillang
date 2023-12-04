@@ -1,0 +1,9 @@
+.navbar-custom {
+    background-color: purple; 
+    color: white; 
+  
+}
+  
+.navbar-custom .navbar-nav .nav-link {
+    color: white; 
+  }

@@ -1,0 +1,69 @@
+
+.specialist-profile {
+    text-align: left;
+    display: flex;
+    align-items: center;
+    width: 60%;
+    margin: 0 auto;
+
+  }
+.specialist-info {
+    display: flex;
+    width: 70%;
+    flex-direction: column;
+    justify-content: flex-start;
+}    
+  
+  .specialist-profile img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    margin: 20px auto;
+    border: 2px solid black;
+
+  }
+  
+  .specialist-profile h2 {
+    font-size: 1.5rem;
+    margin: 10px 0;
+  }
+  
+  .specialist-profile p {
+    font-size: 1rem;
+    color: #555;
+  }
+
+/* footer.css */
+.footer {
+  background-color: #be2747;
+  color: #fff;
+  padding: 5px 0;
+  text-align: center;
+}
+
+.footer-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.footer-logo h3 {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+}
+
+.footer-contact p {
+  font-size: 1rem;
+  margin-bottom: 10px;
+}
+
+.footer-social a {
+  color: #fff;
+  text-decoration: none;
+  margin: 0 10px;
+  font-size: 1.2rem;
+}
+
+.footer-social a:hover {
+  text-decoration: underline;
+}
