@@ -345,12 +345,23 @@ export default function Agenda() {
           });
           console.log("Cita creada");
 
+          setMensajeAgendado("Cita agendada")
+
+
 
           
           
           refetchPacientes();
     
-          
+          handleSelectCargo('');
+          setEspecialistaId('');
+          setRutPaciente('');
+          setMensaje('');
+          setPaciente(null);
+          setFechaValida([]);
+          setHorasDisponibles([]);
+          setBotonValidacion(false);
+
           setDatosCita({
             fecha: "",
             hora: "",
@@ -495,7 +506,7 @@ export default function Agenda() {
         setPaciente(pacienteEncontrado);
         setBotonValidacion(true);
   
-        const especialista = getEspecialistas?.getEspecialistas.find((e) => e.id === especialistaId);
+        const especialista = especialistaData ? especialistaData.getEspecialista : null;
   
         if (especialista) {
           const horariosEspecialista = especialista.horarios || [];
@@ -514,19 +525,38 @@ export default function Agenda() {
           console.log("HORARIOTOTAL", horariosTotal)
           console.log("HORARIOCITA", horariosCita)
 
-          horariosCita.forEach((horario) =>{console.log("FECHAAAAAA",horario.fecha)})
-          
+          console.log("getCitas.getCitas:", getCitas.getCitas);
+
+          console.log("HORARIOSTOTAL,", horariosEspecialista)
+
           
   
           horariosEspecialista.forEach((horarioEspecialista) =>{
-            const citaExistente = horariosCita.find(
-              (horarioCita)=>
+            const citaExistente = horariosCita.find((horarioCita) => {
+              console.log("Comparando:", {
+                RutEspecialista: horariosTotal.Rut,
+                RutCita: horarioCita.especialista.Rut,
+                FechaEspecialista: new Date(Number(horarioEspecialista.fecha)).toISOString().split('T')[0],
+                FechaCita: (horarioCita.fecha),
+                HoraEspecialista: horarioEspecialista.hora,
+                HoraCita: horarioCita.hora
+              });
+          
+              return (
                 horarioCita.especialista.Rut === horariosTotal.Rut &&
-                horarioCita.fecha === horariosTotal.fecha &&
-                horarioCita.hora === horariosTotal.hora
-            );
+                horarioCita.fecha === new Date(Number(horarioEspecialista.fecha)).toISOString().split('T')[0] &&
+                horarioCita.hora === horarioEspecialista.hora
+              );
+            });
+            console.log("Horario Especialista:", horarioEspecialista);
+            console.log("Cita Existente:", citaExistente);
+            console.log("CITA EXISTENTE", citaExistente);
+            console.log("CITA NO EXISTENTE", !citaExistente);
+            
 
             if (!citaExistente){
+              console.log("FECHAVALIDA",horarioEspecialista.fecha)
+              console.log("HORAVALIDA", horarioEspecialista.hora)
               setFechaValida((prev) => [...prev, horarioEspecialista.fecha]);
               setHoraValida((prev) => [...prev, horarioEspecialista.hora]);
             }
