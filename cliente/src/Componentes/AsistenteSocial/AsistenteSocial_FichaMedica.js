@@ -416,11 +416,11 @@ export default function FichaMedica() {
                     <form>
                         <div className="col-md-6 mb-3">
                             <label>Dianostico Anterior: </label>
-                            <textarea className="form-control" type="text" value={historialMedicoInput.diagnosticoAnterior} onChange={e => setHistorialMedicoInput(prev => ({...prev, diagnosticoAnterior: e.target.value}))}/>
+                            <textarea className="form-control" type="text" value={historialMedicoInput.diagnosticoAnterior} onChange={e => setHistorialMedicoInput(prev => ({...prev, diagnosticoAnterior: e.target.value}))} required/>
                         </div>
                         <div className="col-md-6 mb-3">
                             <label>Enfermedad anterior: </label>
-                            <textarea className="form-control" type="text" value={historialMedicoInput.EnfermedadAnterior} onChange={e => setHistorialMedicoInput(prev => ({...prev, EnfermedadAnterior: e.target.value}))}/>
+                            <textarea className="form-control" type="text" value={historialMedicoInput.EnfermedadAnterior} onChange={e => setHistorialMedicoInput(prev => ({...prev, EnfermedadAnterior: e.target.value}))} required/>
                         </div>            
                     </form>
                     <button className="btn btn-primary" onClick={handleCrearFichaMedica}>Crear ficha médica</button>

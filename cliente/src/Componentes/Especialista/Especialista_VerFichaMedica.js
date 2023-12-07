@@ -464,7 +464,7 @@ export default function FichaMedica() {
                                             }}>
                                             <div className="mb-3">
                                                 <label className="form-label">Fecha: </label>
-                                                <input type="date" className="form-control" value={observacionesInput.fecha} onChange={e=>setobservacionesInput(prev=>({...prev, fecha:e.target.value}))}/>
+                                                <input type="date" className="form-control" value={observacionesInput.fecha} onChange={e=>setobservacionesInput(prev=>({...prev, fecha:e.target.value}))} required/>
                                             </div>
 
                                             <div className="mb-3">
@@ -473,17 +473,17 @@ export default function FichaMedica() {
 
                                             <div className="mb-3">
                                                 <label className="form-label">Diagnóstico del paciente</label>
-                                                <textarea  className="form-control" placeholder="Diagnóstico" value={observacionesInput.diagnostico} onChange={e=> setobservacionesInput(prev =>({...prev, diagnostico:e.target.value}))}/>
+                                                <textarea  className="form-control" placeholder="Diagnóstico" value={observacionesInput.diagnostico} onChange={e=> setobservacionesInput(prev =>({...prev, diagnostico:e.target.value}))} required/>
                                             </div>
 
                                             <div className="mb-3">
                                                 <label className="form-label">Notas</label>
-                                                <textarea className="form-control" placeholder="Notas" value={observacionesInput.notas} onChange={e=> setobservacionesInput(prev=>({...prev, notas: e.target.value}))}/>
+                                                <textarea className="form-control" placeholder="Notas" value={observacionesInput.notas} onChange={e=> setobservacionesInput(prev=>({...prev, notas: e.target.value}))} required/>
                                             </div>
 
                                             <div className="mb-3">
                                                 <label className="form-label">Recomendaciones</label>
-                                                <textarea className="form-control" placeholder="Recomendaciones" value={observacionesInput.recomendaciones} onChange={e=> setobservacionesInput(prev =>({...prev, recomendaciones: e.target.value}))}/>
+                                                <textarea className="form-control" placeholder="Recomendaciones" value={observacionesInput.recomendaciones} onChange={e=> setobservacionesInput(prev =>({...prev, recomendaciones: e.target.value}))} required/>
 
                                             </div>
 

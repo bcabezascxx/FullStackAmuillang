@@ -7,6 +7,8 @@ import moment from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { validateRut } from 'rutlib';
 import emailjs from 'emailjs-com';
+import { format, compareAsc, parse } from 'date-fns';
+
 
 const localizer = momentLocalizer(moment);
 
@@ -530,7 +532,7 @@ export default function Agenda() {
           console.log("HORARIOSTOTAL,", horariosEspecialista)
 
           
-  
+          const fechaActual = new Date();
           horariosEspecialista.forEach((horarioEspecialista) =>{
             const citaExistente = horariosCita.find((horarioCita) => {
               console.log("Comparando:", {
@@ -555,10 +557,13 @@ export default function Agenda() {
             
 
             if (!citaExistente){
-              console.log("FECHAVALIDA",horarioEspecialista.fecha)
-              console.log("HORAVALIDA", horarioEspecialista.hora)
-              setFechaValida((prev) => [...prev, horarioEspecialista.fecha]);
-              setHoraValida((prev) => [...prev, horarioEspecialista.hora]);
+              const fechaCita = new Date(Number(horarioEspecialista.fecha));
+              if (fechaCita >= fechaActual && horarioEspecialista.hora >= format(fechaActual, 'HH:mm')){
+                console.log("FECHAVALIDA",horarioEspecialista.fecha)
+                console.log("HORAVALIDA", horarioEspecialista.hora)
+                setFechaValida((prev) => [...prev, horarioEspecialista.fecha]);
+                setHoraValida((prev) => [...prev, horarioEspecialista.hora]);
+              }
             }
           }); 
             
@@ -630,6 +635,10 @@ export default function Agenda() {
 
     }
   };
+
+  const handleRestaurarMensaje = () =>{
+    setMensajeAgendado('')
+  }
 
   const handleChangeRut = (e) => {
     ValidarRut(e.target.value);
@@ -718,7 +727,7 @@ export default function Agenda() {
                     className='form-control'
                     value={selectedCargo}
                     onChange={(e) => handleSelectCargo(e.target.value)}
-                  >
+                    required>
                     <option value=''>Selecciona un cargo</option>
                     {getEspecialistas && [...new Set(getEspecialistas.getEspecialistas.map((especialista) => especialista.cargo))].map((cargo) => (
                       <option key={cargo} value={cargo}>
@@ -735,7 +744,7 @@ export default function Agenda() {
                         className='form-control'
                         value={especialistaId}
                         onChange={(e) => setEspecialistaId(e.target.value)}
-                      >
+                      required>
                         <option value=''>Selecciona un especialista</option>
                         {getEspecialistas && getEspecialistas.getEspecialistas.map((especialista) => (
                           (especialista.cargo === selectedCargo) &&
@@ -754,7 +763,7 @@ export default function Agenda() {
                             className='form-control'
                             value={rutPaciente}
                             onChange={handleChangeRut}
-                          />
+                            required/>
                         </div>
                         {console.log(BotonValidacion)}
                         <button className='btn btn-primary' onClick={handleBuscarPaciente} type='button'>Buscar Paciente</button>
@@ -797,7 +806,6 @@ export default function Agenda() {
                               </select>
                             </div>
                             <button className='btn btn-primary' type='submit'>Crear cita</button>
-                            {MensajeAgendado && <p>{MensajeAgendado}</p>}
                           </div>
                         )}
                       </div>

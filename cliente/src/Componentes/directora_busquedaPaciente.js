@@ -88,6 +88,7 @@ export default function Directora_busquedaPaciente() {
                                             setRut(e.target.value);
                                             handleChange(e)
                                          }}
+                                        required
                                     />
                                 </div>
                                 <button disabled = {isButtonDisabled} type="submit" className="btn btn-primary">Buscar</button>

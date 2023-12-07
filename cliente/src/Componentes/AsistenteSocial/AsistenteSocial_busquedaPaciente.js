@@ -99,7 +99,7 @@ export default function Directora_busquedaPaciente() {
                             <form onSubmit={handleSearch}>
                                 <div className="mb-3">
                                     <label className="form-label">RUT:</label>
-                                    <input type="text" className="form-control" value={Rut} onChange={ (e) => { setRut(e.target.value); handleChange(e)}} />
+                                    <input type="text" className="form-control" value={Rut} onChange={ (e) => { setRut(e.target.value); handleChange(e)}} required />
                                 </div>
                                 <button type="submit" className="btn btn-primary">Buscar</button>
                             </form>

@@ -441,7 +441,7 @@ export default function Especialista() {
                     <form onSubmit={handleSubmit}>
                         <div className="mb-3">
                             <label className="form-label">RUT:</label>
-                            <input type="text" className="form-control" value={rut} onChange={ (e) => { setRut(e.target.value); handleChange(e)}} />
+                            <input type="text" className="form-control" value={rut} onChange={ (e) => { setRut(e.target.value); handleChange(e)}} required/>
                         </div>
 
                         <div className="mb-3">

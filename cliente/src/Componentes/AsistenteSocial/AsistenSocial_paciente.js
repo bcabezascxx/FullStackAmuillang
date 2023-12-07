@@ -203,17 +203,17 @@ export default function Directora_paciente(){
                                 <form onSubmit={handleSubmit}>
                                     <div className="mb-3">
                                         <label className="form-label">RUT:</label>
-                                        <input type="text" className="form-control" value={rut} onChange={ (e) => { setRut(e.target.value); handleChange(e)}} />
+                                        <input type="text" className="form-control" value={rut} onChange={ (e) => { setRut(e.target.value); handleChange(e)}} required />
                                     </div>
 
                                     <div className="mb-3">
                                         <label className="form-label">Nombre:</label>
-                                        <input type="text" className="form-control" value={nombre} onChange={(e) => setNombre(e.target.value)} />
+                                        <input type="text" className="form-control" value={nombre} onChange={(e) => setNombre(e.target.value)} required />
                                     </div>
 
                                     <div className="mb-3">
                                         <label className="form-label">Apellido:</label>
-                                        <input type="text" className="form-control" value={apellido} onChange={(e) => setApellido(e.target.value)} />
+                                        <input type="text" className="form-control" value={apellido} onChange={(e) => setApellido(e.target.value)} required />
                                     </div>
                                     <div className="mb-3">
                                         <label className="form-label">SEXO:</label>
@@ -226,11 +226,11 @@ export default function Directora_paciente(){
                                     </div>
                                     <div className="mb-3">
                                         <label className="form-label">Telefono:</label>
-                                        <input type="number" className="form-control" value={telefono} onChange={(e) => setTelefono(e.target.value)} />
+                                        <input type="number" className="form-control" value={telefono} onChange={(e) => setTelefono(e.target.value)} required/>
                                     </div>
                                     <div className="mb-3">
                                         <label className="form-label">Dirección :</label>
-                                        <input type="text" className="form-control" value={Direccion} onChange={(e) => setDireccion(e.target.value)} />
+                                        <input type="text" className="form-control" value={Direccion} onChange={(e) => setDireccion(e.target.value)} required/>
                                     </div>
                                     <div className="mb-3">
                                         <label className="form-label">Fecha de nacimiento:</label>

@@ -96,7 +96,7 @@ export default function Directora_busquedaPaciente() {
                                         className="form-control"
                                         value={Rut}
                                         onChange={handleChangeRut}
-                                    />
+                                        required/>
                                 </div>
                                 <button type="submit" className="btn btn-primary">Buscar</button>
                             </form>

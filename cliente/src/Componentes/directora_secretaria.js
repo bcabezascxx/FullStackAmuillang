@@ -343,17 +343,17 @@ export default function Directora_secretaria(){
                                 <form onSubmit={handleSubmit}>
                                     <div className="mb-3">
                                         <label className="form-label">RUT:</label>
-                                        <input type="text" className="form-control" value={rut} onChange={ (e) => { setRut(e.target.value); handleChange(e)}} />
+                                        <input type="text" className="form-control" value={rut} onChange={ (e) => { setRut(e.target.value); handleChange(e)}} required/>
                                     </div>
 
                                     <div className="mb-3">
                                         <label className="form-label">Nombre:</label>
-                                        <input type="text" className="form-control" value={nombre} onChange={(e) => setNombre(e.target.value)} />
+                                        <input type="text" className="form-control" value={nombre} onChange={(e) => setNombre(e.target.value)} required/>
                                     </div>
 
                                     <div className="mb-3">
                                         <label className="form-label">Apellido:</label>
-                                        <input type="text" className="form-control" value={apellido} onChange={(e) => setApellido(e.target.value)} />
+                                        <input type="text" className="form-control" value={apellido} onChange={(e) => setApellido(e.target.value)} required/>
                                     </div>
 
                                     <div className="mb-3">
@@ -363,7 +363,7 @@ export default function Directora_secretaria(){
 
                                     <div className='mb-3'>
                                         <label className='form-label'>Email: </label>
-                                        <input type='text' className='form-control' value={email} onChange={(e)=> setEmail(e.target.value)} />
+                                        <input type='text' className='form-control' value={email} onChange={(e)=> setEmail(e.target.value)} required/>
                                     </div>
 
 
@@ -381,7 +381,7 @@ export default function Directora_secretaria(){
 
                                     <div className="mb-3">
                                         <label className="form-label">Contraseña:</label>
-                                        <input type="text" className="form-control" value={pass} onChange={(e) => setPass(e.target.value)} />
+                                        <input type="text" className="form-control" value={pass} onChange={(e) => setPass(e.target.value)} required/>
                                     </div>
 
                                         <button type="submit" className="btn btn-primary">Guardar</button>

@@ -8,6 +8,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck, faTimes } from '@fortawesome/free-solid-svg-icons';
 
+
+
 moment.tz.setDefault('America/Santiago');
 
 const CREAR_CITA = gql`
@@ -219,6 +221,9 @@ export default function Agenda() {
     // Lógica para actualizar disponibilidad (puedes usar la mutación)
   };
 
+  const fecha= new Date()
+  console.log(fecha)
+
 
   return (
     <div>
@@ -243,20 +248,24 @@ export default function Agenda() {
             <tbody>
               {eventosCitas.map((cita) => (
                 <tr key={cita.id}>
-                  <td className="d-sm-table-cell">{moment(cita.fecha).format("YYYY-MM-DD")}</td>
-                  <td className="d-sm-table-cell">{cita.hora}</td>
-                  <td className="d-md-table-cell">{cita.especialista ? `${cita.especialista.nombre} ${cita.especialista.apellido}` : ''}</td>
-                  <td className="d-none d-md-table-cell">{cita.especialista ? cita.especialista.cargo : ''}</td>
-                  <td className="-md-table-cell">{cita.paciente ? `${cita.paciente.nombre} ${cita.paciente.apellido}` : ''}</td>
-                  <td className="d-md-table-cell">{cita.paciente ? `${cita.paciente.Rut}` : ''}</td>
-                  <td>
-                    {cita.disponibilidad ? (
-                      <FontAwesomeIcon icon={faCheck} style={{ color: 'green' }} />
-
-                    ) : (
-                      <FontAwesomeIcon icon={faTimes} style={{ color: 'red' }} />
-                    )}
-                  </td>
+                  {cita.fecha>=moment(fecha).format('YYYY-MM-DD') && cita.hora>=moment(fecha).format('HH:mm') && (
+                    <>
+                      <td className="d-sm-table-cell">{moment(cita.fecha).format("YYYY-MM-DD")}</td>
+                      <td className="d-sm-table-cell">{cita.hora}</td>
+                      <td className="d-md-table-cell">{cita.especialista ? `${cita.especialista.nombre} ${cita.especialista.apellido}` : ''}</td>
+                      <td className="d-none d-md-table-cell">{cita.especialista ? cita.especialista.cargo : ''}</td>
+                      <td className="-md-table-cell">{cita.paciente ? `${cita.paciente.nombre} ${cita.paciente.apellido}` : ''}</td>
+                      <td className="d-md-table-cell">{cita.paciente ? `${cita.paciente.Rut}` : ''}</td>
+                      <td>
+                        {cita.disponibilidad ? (
+                          <FontAwesomeIcon icon={faCheck} style={{ color: 'green' }} />
+    
+                        ) : (
+                          <FontAwesomeIcon icon={faTimes} style={{ color: 'red' }} />
+                        )}
+                      </td>
+                    </>
+                  )}
                 </tr>
               ))}
             </tbody>
