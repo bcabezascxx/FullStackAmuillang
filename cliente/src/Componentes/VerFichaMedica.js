@@ -3,6 +3,7 @@ import { useMutation, useQuery , gql } from '@apollo/client';
 import { useParams } from 'react-router-dom';
 import Nav from './nav'
 import { useLocation } from 'react-router-dom';
+import moment from "moment"
 
 
 const CREAR_FICHA_MEDICA = gql`
@@ -346,7 +347,7 @@ export default function FichaMedica() {
                                             <tr>
                                                 <th scope='col' className='col-sm-3 m-2'><p><strong><u>Fecha de creación: </u></strong></p></th>
                                                     {FichaMedica && FichaMedica.fechaCreacion &&(
-                                                        <td className='col-sm-9'>{new Date(Number(FichaMedica.fechaCreacion)).toLocaleDateString()}</td>
+                                                        <td className='col-sm-9'>{moment(Number(FichaMedica.fechaCreacion)).format("DD-MM-YYYY")}</td>
                                                 )}
                                             </tr>
                                         </tbody>
@@ -386,7 +387,7 @@ export default function FichaMedica() {
                             {FichaMedica ? FichaMedica.observaciones.map((observaciones, index) =>(
                                 <div className="mb-3" key={index}>
                                     <div className="card">
-                                        <h4 className="card-title text-center"><strong>Fecha: </strong> {new Date(Number(observaciones.fecha)).toLocaleDateString()}</h4>
+                                        <h4 className="card-title text-center"><strong>Fecha: </strong> {moment(Number(observaciones.fecha)).format("DD-MM-YYYY")}</h4>
                                         <div className="card-body">
                                             <p className="card-text">Nombre y apellido del especialista: {observaciones.especialista ? `${observaciones.especialista.nombre} ${observaciones.especialista.apellido}` : 'Especialista Desconocido'}</p>
                                             <p className="card-text">Cargo del especialista: {observaciones.especialista ? (observaciones.especialista.cargo ? `${observaciones.especialista.cargo}` : 'Cargo desconocido') : 'Especialista Desconocido'}</p>

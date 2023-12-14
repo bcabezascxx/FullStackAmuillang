@@ -6,6 +6,8 @@ import Footer from './Footer';
 import Nav from "./nav"
 import "./Especialista.css"
 import { useLocation, Link, useNavigate } from 'react-router-dom';
+import moment from 'moment';
+
 
 
 const GET_ESPECIALISTAS = gql`
@@ -282,7 +284,7 @@ function Especialista() {
         <tbody>
           {filterCitas(dataCitas.getCitas && dataCitas.getCitas, 'today').map((cita) => (
               <tr key={cita.id}>
-                <td>{cita.fecha}</td>
+                <td>{moment(cita.fecha).format("DD-MM-YYYY")}</td>
                 <td>{cita.hora}</td>
                 <td>{cita.paciente.nombre} {cita.paciente.apellido}</td>
                 <td>{cita.paciente.Rut} </td>
@@ -307,7 +309,7 @@ function Especialista() {
         <tbody>
           {filterCitas(dataCitas.getCitas, 'upcoming').map((cita) => (
               <tr key={cita.id}>
-                <td>{cita.fecha}</td>
+                <td>{moment(cita.fecha).format("DD-MM-YYYY")}</td>
                 <td>{cita.hora}</td>
                 <td>{cita.paciente.nombre} {cita.paciente.apellido}</td>
                 <td>{cita.paciente.Rut} </td>
@@ -332,7 +334,7 @@ function Especialista() {
         <tbody>
           {filterCitas(dataCitas.getCitas, 'past').map((cita) => (
               <tr key={cita.id}>
-                <td>{cita.fecha}</td>
+                <td>{moment(cita.fecha).format("DD-MM-YYYY")}</td>
                 <td>{cita.hora}</td>
                 <td>{cita.paciente.nombre} {cita.paciente.apellido}</td>
                 <td>{cita.paciente.Rut} </td>

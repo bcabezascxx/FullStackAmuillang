@@ -68,6 +68,7 @@ const GET_ESPECIALISTAS = gql`
       nombre
       Rut
       apellido
+      email
       horarios {
         fecha
         hora
@@ -99,6 +100,7 @@ const GET_PACIENTES = gql`
       nombre
       apellido
       Rut
+      email
     }
   }
 `
@@ -250,10 +252,12 @@ export default function Agenda() {
       const rutEspecialista = especialista ? especialista.Rut : null
       const nombreEspecialista = especialista ? especialista.nombre : null
       const apellidoEspecialista = especialista ? especialista.apellido : null
+      const correoEspecialista = especialista ? especialidades.email : null
 
       const rutPaciente = paciente ? paciente.Rut : null
       const nombrePaciente = paciente ? paciente.nombre : null
       const apellidoPaciente = paciente ? paciente.apellido : null
+      const correoPaciente= paciente ? paciente.email : null
 
       const diaCita = new Date(parseInt(datosCita.fecha)).toISOString().split('T')[0];
 
@@ -270,6 +274,8 @@ export default function Agenda() {
         apellido_especialista: apellidoEspecialista,
         dia_cita: diaCita,
         dia_hora: datosCita.hora,
+        correo_especialista: correoEspecialista,
+        correo_paciente: correoPaciente,
         subject: 'Cita agendada',
       };
 

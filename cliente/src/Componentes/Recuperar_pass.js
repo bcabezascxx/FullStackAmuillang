@@ -2,14 +2,53 @@ import React, { useState } from 'react';
 import emailjs from 'emailjs-com';
 import logo from "./img/marca-fondoblanco.png";
 import { Link } from 'react-router-dom';
+import { gql, useQuery } from '@apollo/client';
+
+const GETESPECIALISTA=gql`
+  query getEspecialistas{
+    getEspecialistas{
+      id
+      Rut
+      email
+      nombre
+      apellido
+    }
+  }
+
+`
 
 export default function RecuperarContrasena() {
+  const {data:datagetEspecialistas, loading:loadingEspecialistas, error:errorEspecialista} = useQuery(GETESPECIALISTA)
   const [solicitudEnviada, setSolicitudEnviada] = useState('');
   const [rut, setRut] = useState('')
   const [email, setEmail] = useState('')
+  const [datosEspecialista, setDatosEspecialista] = useState({
+    nombreIngresado:'',
+    apellidoIngresado:'',
+    RutIngresado:'',
+    emailIngresado:''
+  })
+
+  if (loadingEspecialistas){
+    return <p>Cargando...</p>
+  }
 
 
-  
+  const GetEspecialistaFunction = (especialista,rut) =>{
+    const datosEspecialista = especialista.find((esp) => esp.Rut===rut);
+    
+    if (datosEspecialista){
+      setDatosEspecialista({
+        nombreIngresado: datosEspecialista.nombre,
+        apellidoIngresado: datosEspecialista.apellido,
+        RutIngresado: datosEspecialista.Rut,
+        emailIngresado: datosEspecialista.email,
+      });
+    return datosEspecialista
+    }else{
+      return <p>paciente no encontrado</p>
+    }
+  }
 
 
   const handleEnviarCorreo = async (event) => {
@@ -17,13 +56,42 @@ export default function RecuperarContrasena() {
   
     try {
 
+      const especialistas = datagetEspecialistas?.getEspecialistas || []
+
+      if (rut == ''){
+        return <p>Rut invalido</p>
+      }
+
+      const especialista = GetEspecialistaFunction(especialistas,rut)
+      console.log("especialista",especialista)
+
+      
+
+      const nombreEspecialista = especialista ? especialista.nombre : null
+      const apellidoEspecialista = especialista ? especialista.apellido : null
+      const rutEspecialista = especialista ? especialista.Rut : null
+      const emailEspecialista = especialista ? especialista.email : null
+      
+      console.log("nombreEspecialista",nombreEspecialista)
+      console.log("apellidoEspecialista",apellidoEspecialista)
+      console.log("rutEspecialista",rutEspecialista)
+
+      if (nombreEspecialista=='' && apellidoEspecialista=='' && rutEspecialista=='' && emailEspecialista==''){
+        setSolicitudEnviada("Especialista no encontrado")
+        return <p>Especialista no encontrado...</p>
+      }
+ 
+
+
       const servicioCorreo = 'service_r7yijvw'; 
       const templateID = 'template_2a9j76s'; 
       const userID = 'jhMkGddPANojUpI5z'; 
   
       const mensaje = {
-        rut: rut,
-        email: email,
+        nombre_especialista:nombreEspecialista,
+        apellido_especialista:apellidoEspecialista,
+        Rut: rutEspecialista,
+        email:emailEspecialista,
         subject: 'Solicitud de cambio de contraseña contraseña',
         body: `El profesional con RUT: ${rut} necesita cambiar contraseña, el especialista tiene correo ${email}`
       };
@@ -69,18 +137,6 @@ export default function RecuperarContrasena() {
                         required
                         name="rut"
                         onChange={(e) => setRut(e.target.value)}
-                      />
-                    </div>
-                    <div className="form-group">
-                      <label htmlFor="correo">Correo Electrónico:</label>
-                      <input
-                        type="email"
-                        value={email}
-                        className="form-control"
-                        placeholder="Ingrese su correo electrónico"
-                        required
-                        name="correo"
-                        onChange={(e) => setEmail(e.target.value)}
                       />
                     </div>
                     <button type="submit" className="btn btn-primary btn-lg w-100" style={{ backgroundColor: '#800080' }}>
