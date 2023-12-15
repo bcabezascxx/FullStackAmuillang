@@ -57,7 +57,7 @@ function Login() {
       } else if (data.iniciarSesion.cargo === 'Asistente Social') {
         setAuthenticated(true, "AsistenteSocial");
         sessionStorage.setItem('AsistenteSocialId', data.iniciarSesion.id)
-        navigate('/asistenteSocial/inicio');
+        navigate('/AsistenteSocial/inicio');
       }
 
       setMensaje(data.iniciarSesion.message);

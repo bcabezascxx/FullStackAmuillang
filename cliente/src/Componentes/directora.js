@@ -400,7 +400,15 @@ export default function Especialista() {
                                 <div className="card-text">
                                     Horarios:
                                     <ul>
-                                    {esp.horarios.map((horario, index) => {
+                                    {esp.horarios
+                                    .filter((horario)=>{
+                                        const fechaHorario = new Date(Number(horario.fecha));
+                                        const fechaHoy = new Date();
+                                        fechaHorario.setHours(0, 0, 0, 0);
+                                        fechaHoy.setHours(0, 0, 0, 0);
+                                        return fechaHorario.getTime() >= fechaHoy.getTime();
+                                    })
+                                    .map((horario, index) => {
                                         //const formattedDate = formatDate(horario.fecha);
                                         const fechaFormateada = new Date(Number(horario.fecha)).toLocaleDateString('es-CL', { timeZone: 'UTC' });
 
