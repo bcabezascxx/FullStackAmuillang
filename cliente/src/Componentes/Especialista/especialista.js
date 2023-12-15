@@ -133,6 +133,7 @@ function Especialista() {
   });
   const [actualizarHorarios] = useMutation(UPDATE_HORARIO);
 
+
   
 
   useEffect(() => {
@@ -183,10 +184,10 @@ function Especialista() {
     return `${year}-${month}-${day}`;
   };
 
+
   const filterCitas = (citas, type) => {
     const currentDate = getCurrentDate();
-    const rutEspecialista = dataCitas.getCitas && data.getEspecialista && data.getEspecialista?.Rut;
-    console.log(dataCitas.getCitas)
+    const rutEspecialista = dataCitas.getCitas && dataCitas.getCitas && data.getEspecialista && data.getEspecialista?.Rut;
     if (type === 'today') {
       return citas.filter((cita) => cita.fecha === currentDate && cita.especialista.Rut === rutEspecialista);
     } else if (type === 'upcoming') {
@@ -199,39 +200,7 @@ function Especialista() {
   };
 
 
-  /*const handleActualizarHoras = async (e) => {
-    e.preventDefault();
-    try {
-      console.log(especialistaId);
-      console.log(horarios);
   
-      // Extrae las propiedades fecha y hora de cada objeto en el array
-      const horariosParaEnviar = horarios.map(({ fecha, hora }) => ({ fecha, hora }));
-  
-      console.log(horariosParaEnviar);
-  
-      const { data:actualizar } = await actualizarHorarios({
-        variables: {
-          id: data.getEspecialista.id,
-          horarios: horariosParaEnviar,
-        },
-      });
-      console.log('Horarios actualizados:', actualizar);
-    } catch (error) {
-      console.log('error', error);
-    }
-  };*/
-
-  /*const handleAgregarHorario = () => {
-    setNumHorarios((prevNumHorarios) => prevNumHorarios + 1);
-    setHorarios((prevHorarios) => [...prevHorarios, { fecha: '', hora: '' }]);
-  };
-
-  const handleInputChange = (index, key, value) => {
-    const nuevosHorarios = [...horarios];
-    nuevosHorarios[index][key] = value;
-    setHorarios(nuevosHorarios);
-  };*/
 
   return (
     <div className="App">
@@ -307,7 +276,7 @@ function Especialista() {
           </tr>
         </thead>
         <tbody>
-          {filterCitas(dataCitas.getCitas, 'upcoming').map((cita) => (
+          {filterCitas(dataCitas.getCitas && dataCitas.getCitas, 'upcoming').map((cita) => (
               <tr key={cita.id}>
                 <td>{moment(cita.fecha).format("DD-MM-YYYY")}</td>
                 <td>{cita.hora}</td>
@@ -332,7 +301,7 @@ function Especialista() {
           </tr>
         </thead>
         <tbody>
-          {filterCitas(dataCitas.getCitas, 'past').map((cita) => (
+          {filterCitas(dataCitas.getCitas && dataCitas.getCitas, 'past').map((cita) => (
               <tr key={cita.id}>
                 <td>{moment(cita.fecha).format("DD-MM-YYYY")}</td>
                 <td>{cita.hora}</td>

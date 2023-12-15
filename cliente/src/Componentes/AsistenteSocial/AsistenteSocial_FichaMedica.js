@@ -416,7 +416,7 @@ export default function FichaMedica() {
                     <h4>No se encontró información de la ficha médica para el paciente con rut:  {paciente.Rut}</h4>
                     <form>
                         <div className="col-md-6 mb-3">
-                            <label>Dianostico Anterior: </label>
+                            <label>Diagnóstico anterior: </label>
                             <textarea className="form-control" type="text" value={historialMedicoInput.diagnosticoAnterior} onChange={e => setHistorialMedicoInput(prev => ({...prev, diagnosticoAnterior: e.target.value}))} required/>
                         </div>
                         <div className="col-md-6 mb-3">

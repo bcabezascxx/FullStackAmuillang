@@ -134,7 +134,7 @@ const CANCELAR_CITA = gql`
 
 export default function Agenda() {
   const [agendarCita] = useMutation(CREAR_CITA)
-  const { data: getCitas, error: errorgetCitas, refetch: refetchPacientes } = useQuery(GET_CITAS)
+  const { data: getCitas, loading:loadingGetCitas, error: errorgetCitas, refetch: refetchPacientes } = useQuery(GET_CITAS)
   const { data: getEspecialistas, error: errorgetEspecialistas } = useQuery(GET_ESPECIALISTAS)
   const { data: getPacientes, error: errorgetPacientes } = useQuery(GET_PACIENTES)
   const [updateCitaDisponibilidad] = useMutation(UPDATE_DISPONIBILIDAD)
@@ -165,6 +165,8 @@ export default function Agenda() {
   const [MensajeAgendado,setMensajeAgendado] = useState('')
   const [FechaValida, setFechaValida] = useState([])
   const [HoraValida, setHoraValida] = useState([])
+  const [busquedaRealizada, setBusquedaRealizada] = useState(false);
+
 
   
 
@@ -230,7 +232,7 @@ export default function Agenda() {
   });
 
     // Manejo de loading y error
-    if (loadingPaciente || loadingEspecialista) return <p>Cargando...</p>;
+    if (loadingPaciente || loadingEspecialista || loadingGetCitas) return <p>Cargando...</p>;
     if (errorPaciente || errorEspecialista) return <p>Error: {errorPaciente ? errorPaciente.message : errorEspecialista.message}</p>;
 
     const pacienteInformacion = pacienteData ? pacienteData.getPaciente : null;
@@ -294,14 +296,11 @@ export default function Agenda() {
     try {     
       const especialistaData = data;
       const especialista = data.getEspecialista;
-      console.log("ESPE", especialista.Rut)
 
       setEspecialistaRut(especialista.Rut);
   
       const fechaFormateada2 = new Date(parseInt(datosCita.fecha)).toISOString().split('T')[0];
-      console.log("Verificación",especialista.Rut)
-      console.log("Verificación2",fechaFormateada2)
-      console.log("Verificación3",datosCita.hora)
+
   
       const citaExistente = getCitas.getCitas.find((cita) => {
         const condicionesCoincidencia =
@@ -309,16 +308,11 @@ export default function Agenda() {
           cita.fecha === fechaFormateada2 &&
           cita.hora === datosCita.hora;
   
-        console.log("A",cita.especialista.rut)
-        console.log("Condiciones de coincidencia:", condicionesCoincidencia);
-        console.log("Valores específicos para la cita:", cita);
-        console.log("FECHA", fechaFormateada2);
-        console.log("HORA", datosCita.hora);
+
   
         return condicionesCoincidencia;
       });
   
-      console.log("CitaExistente:", citaExistente);
 
       
 
@@ -329,16 +323,10 @@ export default function Agenda() {
   
       
       try {
-        console.log("pacienteId", pacienteId);
-        console.log("especialistaId", especialistaId);
-        console.log("fecha: ", datosCita.fecha);
-        console.log("hora: ", datosCita.hora);
-        console.log("disponibilidad", datosCita.disponibilidad);
+
   
         const fechaFormateada = new Date(parseInt(datosCita.fecha)).toISOString().split('T')[0];
   
-        console.log(fechaFormateada);
-        console.log(pacienteId, especialistaId,  fechaFormateada, datosCita.hora,datosCita.disponibilidad)
         if (pacienteId && especialistaId && fechaFormateada && datosCita.hora && datosCita.hora!='' && pacienteId!='' && especialistaId!=''){
           const { data } = await agendarCita({
             variables: {
@@ -355,10 +343,6 @@ export default function Agenda() {
 
           setMensajeAgendado("Cita agendada")
 
-
-
-          
-          
           refetchPacientes();
     
           handleSelectCargo('');
@@ -380,7 +364,7 @@ export default function Agenda() {
           
         }
         else{
-          console.log("eror al crear")
+          console.log("error al crear")
           setMensajeAgendado("Error al crear cita");
           return
         }
@@ -436,7 +420,6 @@ export default function Agenda() {
   }
 
   const handleChange = (a) => {
-    console.log(validateRut(a.target.value))
     if ( a.target.value && validateRut(a.target.value)) { 
         setIsButtonDisabled(false);
     }
@@ -455,7 +438,6 @@ export default function Agenda() {
   const BuscarPorRut = async () => {
     try {
         const response = await refetchBusqueda({ Rut });
-        console.log("responde", response)
         if (response && response.data && response.data.buscarPacientePorRut) {
             setPaciente(response.data.buscarPacientePorRut);
             setMensajeResultado("Rut encontrado");
@@ -463,7 +445,6 @@ export default function Agenda() {
             setMensajeResultado("No se encontró el paciente con el Rut proporcionado.");
         }
     } catch (err) {
-        console.log(err);
         if (err.graphQLErrors && err.graphQLErrors.length > 0) {
             setMensajeResultado(err.graphQLErrors[0].message);
         } else {
@@ -477,7 +458,6 @@ export default function Agenda() {
   const handleMostrarFormularioEspecialidad = () => {
     buscarEspecialistas();
     setMostrarFormularioEspecialidad(true);
-    console.log("mostrarFormularioEspecialidad:", mostrarFormularioEspecialidad);
     
     const especialidadesUnicas = [...new Set(getEspecialistas.getEspecialistas.map(especialista => especialista.cargo))];
     setEspecialidades(especialidadesUnicas);
@@ -490,7 +470,6 @@ export default function Agenda() {
       (e) => e.cargo === selectedEspecialidad
     );
     setFilteredEspecialistas(especialistasFiltered);
-    console.log("Especialistas filtrados:", especialistasFiltered);
     setEventosCalendario(transformarCitasParaCalendario(getCitas.getCitas, selectedEspecialidad));
 
     setHasSearched(true);
@@ -530,12 +509,7 @@ export default function Agenda() {
           const horariosTotal = especialistaData ? especialistaData.getEspecialista : null;
           const horariosCita = getCitas.getCitas;
 
-          console.log("HORARIOTOTAL", horariosTotal)
-          console.log("HORARIOCITA", horariosCita)
 
-          console.log("getCitas.getCitas:", getCitas.getCitas);
-
-          console.log("HORARIOSTOTAL,", horariosEspecialista)
 
           
           const fechaActual = new Date();
@@ -556,17 +530,13 @@ export default function Agenda() {
                 horarioCita.hora === horarioEspecialista.hora
               );
             });
-            console.log("Horario Especialista:", horarioEspecialista);
-            console.log("Cita Existente:", citaExistente);
-            console.log("CITA EXISTENTE", citaExistente);
-            console.log("CITA NO EXISTENTE", !citaExistente);
+            
             
 
             if (!citaExistente){
               const fechaCita = new Date(Number(horarioEspecialista.fecha));
               if (fechaCita >= fechaActual && horarioEspecialista.hora >= format(fechaActual, 'HH:mm')){
-                console.log("FECHAVALIDA",horarioEspecialista.fecha)
-                console.log("HORAVALIDA", horarioEspecialista.hora)
+                
                 setFechaValida((prev) => [...prev, horarioEspecialista.fecha]);
                 setHoraValida((prev) => [...prev, horarioEspecialista.hora]);
               }
@@ -582,33 +552,11 @@ export default function Agenda() {
       } else {
         setMensaje("Paciente no encontrado");
       }
+    setBusquedaRealizada(true);
     } catch (error) {
       console.error("Error al buscar paciente:", error);
     }
   };
-  
-  
-
-  
-  
-
-  /*const actualizarHorasDisponibles = (nuevaFecha) => {
-    const especialista = getEspecialistas?.getEspecialistas.find((e) => e.id === especialistaId);
-  
-    if (especialista) {
-      
-      const horariosFechaSeleccionada = especialista.horarios
-        .filter((horario) => horario.fecha === nuevaFecha);
-  
-      
-      const horasDisponibles = horariosFechaSeleccionada.map((horario) => horario.hora);
-      
-      setHorasDisponibles(horasDisponibles);
-    } else {
-      
-      setHorasDisponibles([]);
-    }
-  };*/
 
   const actualizarHorasDisponibles = (fechaSeleccionada) => {
     const especialista = getEspecialistas?.getEspecialistas.find((e) => e.id === especialistaId);
@@ -679,7 +627,6 @@ export default function Agenda() {
               <div className="row mt-3">
                 <h3>Especialistas con la especialidad seleccionada:</h3>
                 <br/>
-                {console.log("Especialistas filtrados:", especialistasFiltered)}
                 {hassearch ? (
                   especialistasFiltered.length > 0 ? (
                     especialistasFiltered.map((especialista) => (
@@ -732,7 +679,9 @@ export default function Agenda() {
                   <select
                     className='form-control'
                     value={selectedCargo}
-                    onChange={(e) => handleSelectCargo(e.target.value)}
+                    onChange={(e) => {
+                      handleSelectCargo(e.target.value);
+                      setBusquedaRealizada(false);}}
                     required>
                     <option value=''>Selecciona un cargo</option>
                     {getEspecialistas && [...new Set(getEspecialistas.getEspecialistas.map((especialista) => especialista.cargo))].map((cargo) => (
@@ -749,7 +698,9 @@ export default function Agenda() {
                       <select
                         className='form-control'
                         value={especialistaId}
-                        onChange={(e) => setEspecialistaId(e.target.value)}
+                        onChange={(e) => {
+                          setEspecialistaId(e.target.value);
+                          setBusquedaRealizada(false);}}
                       required>
                         <option value=''>Selecciona un especialista</option>
                         {getEspecialistas && getEspecialistas.getEspecialistas.map((especialista) => (
@@ -774,7 +725,7 @@ export default function Agenda() {
                         {console.log(BotonValidacion)}
                         <button className='btn btn-primary' onClick={handleBuscarPaciente} type='button'>Buscar Paciente</button>
                         {mensaje && <p>{mensaje}</p>}
-                        {paciente && BotonValidacion && (
+                        {paciente && BotonValidacion && busquedaRealizada &&(
                           <div>
                             <div className='mb-3'>
                               <label className='form-label'>Fecha: </label>
