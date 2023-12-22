@@ -130,7 +130,11 @@ const GET_ESPECIALISTA_ID=gql`
 
 
 export default function FichaMedica() {
+    const navigate = useNavigate()
     const { pacienteId } = useParams();
+    if (pacienteId===null){
+        navigate("/")
+    }
     const pacienteIdString = pacienteId.toString(); 
 
     const {state} = useLocation()
@@ -140,11 +144,9 @@ export default function FichaMedica() {
 
     const observacionesEditState = {};
 
-    const navigate = useNavigate()
+    
 
-    if (especialistaId===null){
-        navigate("/")
-    }
+    
 
 
     //Mutation y Queries

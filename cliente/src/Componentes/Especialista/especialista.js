@@ -124,12 +124,13 @@ function Especialista() {
   if (especialistaId === null) {
     navigate("/");
   }
+  const especialistaIdString=especialistaId.toString()
 
   const { loading: loadingEspecialistas, error: errorEspecialistas, data: dataEspecialistas } = useQuery(GET_ESPECIALISTAS);
   const { loading: loadingPacientes, error: errorPacientes, data: dataPacientes } = useQuery(GET_PACIENTES);
   const { loading: loadingCitas, error: errorCitas, data: dataCitas } = useQuery(GET_CITAS);
   const { loading, error, data } = useQuery(GET_ESPECIALISTA_ID, {
-    variables: { id: especialistaId.toString() }
+    variables: { id: especialistaIdString }
   });
   const [actualizarHorarios] = useMutation(UPDATE_HORARIO);
 

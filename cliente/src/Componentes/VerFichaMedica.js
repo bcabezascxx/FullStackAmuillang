@@ -1,6 +1,6 @@
 import React, { useState , useEffect} from 'react';
 import { useMutation, useQuery , gql } from '@apollo/client';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import Nav from './nav'
 import { useLocation } from 'react-router-dom';
 import moment from "moment"
@@ -117,7 +117,11 @@ const  ACTUALIZAR_OBSERVACION=gql`
 
 
 export default function FichaMedica() {
+    const navigate = useNavigate();
     const { pacienteId } = useParams();
+    if (pacienteId == null){
+        navigate("/")
+    }
     const pacienteIdString = pacienteId.toString(); 
 
     const [fichaMedica, setFichaMedica] = useState(null);

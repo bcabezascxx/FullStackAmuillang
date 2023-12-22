@@ -118,7 +118,11 @@ const  ACTUALIZAR_OBSERVACION=gql`
 
 
 export default function FichaMedica() {
+    const navigate = useNavigate()
     const { pacienteId } = useParams();
+    if (pacienteId == null){
+        navigate("/")
+    }
     const pacienteIdString = pacienteId.toString(); 
 
 
